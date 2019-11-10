@@ -1,0 +1,28 @@
+{
+  "name": "loblet",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "author": "Matt Lewis <matt@mplewis.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.22",
+    "@types/node": "^12.12.7",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": ">=6.2.2",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": ">=2.18.0",
+    "eslint-plugin-node": ">=9.1.0",
+    "eslint-plugin-promise": ">=4.2.1",
+    "eslint-plugin-standard": ">=4.0.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^8.5.0",
+    "typescript": "^3.7.2"
+  }
+}
