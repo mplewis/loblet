@@ -7,4 +7,5 @@ COPY package.json yarn.lock .
 RUN yarn install
 
 COPY . .
+ENV CONTAINERIZED true
 ENTRYPOINT ["yarn"]
