@@ -8,6 +8,12 @@
   "scripts": {
     "test": "jest"
   },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "expand-tilde": "^2.0.2",
+    "fs-extra": "^8.1.0",
+    "shelljs": "^0.8.3"
+  },
   "devDependencies": {
     "@types/expand-tilde": "^2.0.0",
     "@types/fs-extra": "^8.0.1",
@@ -28,11 +34,5 @@
     "ts-jest": "^24.1.0",
     "ts-node": "^8.5.0",
     "typescript": "^3.7.2"
-  },
-  "dependencies": {
-    "chalk": "^3.0.0",
-    "expand-tilde": "^2.0.2",
-    "fs-extra": "^8.1.0",
-    "shelljs": "^0.8.3"
   }
 }
