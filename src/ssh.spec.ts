@@ -10,6 +10,11 @@ ensureContainerized()
 
 const ID_RSA = expandTilde('~/.ssh/id_rsa')
 
+async function writeKnownHosts (hosts: string[]): Promise<void> {
+  await ensureFile(KNOWN_HOSTS_FILE)
+  await writeFile(KNOWN_HOSTS_FILE, hosts.join('\n'))
+}
+
 async function itPopulatesTheFileAsExpected (times = 1): Promise<void> {
   it('populates the file as expected', async () => {
     for (let i = 0; i < times; i++) {
@@ -33,34 +38,31 @@ describe('ensureKnownHost', () => {
 
   describe('when the file exists with no matching line', () => {
     beforeEach(async () => {
-      const lines = [
+      await writeKnownHosts([
         'mplewis.com ssh-rsa SOME-FAKE-KEY-DATA',
         'fdnt.me ssh-rsa SOME-FAKE-KEY-DATA'
-      ]
-      await writeFile(KNOWN_HOSTS_FILE, lines.join('\n'))
+      ])
     })
     itPopulatesTheFileAsExpected()
   })
 
   describe('ensuring the line exists multiple times in a row', () => {
     beforeEach(async () => {
-      const lines = [
+      await writeKnownHosts([
         'mplewis.com ssh-rsa SOME-FAKE-KEY-DATA',
         'fdnt.me ssh-rsa SOME-FAKE-KEY-DATA'
-      ]
-      await writeFile(KNOWN_HOSTS_FILE, lines.join('\n'))
+      ])
     })
     itPopulatesTheFileAsExpected(5)
   })
 
   describe('when the file exists with a matching line', () => {
     beforeEach(async () => {
-      const lines = [
+      await writeKnownHosts([
         'mplewis.com ssh-rsa SOME-FAKE-KEY-DATA',
         'fdnt.me ssh-rsa SOME-FAKE-KEY-DATA',
         githubKnownHost
-      ]
-      await writeFile(KNOWN_HOSTS_FILE, lines.join('\n'))
+      ])
     })
     itPopulatesTheFileAsExpected()
   })
@@ -72,7 +74,7 @@ describe('ensureKnownHost', () => {
     })
     afterEach(async () => { await unlink(ID_RSA) })
     it('connects to GitHub successfully', async () => {
-      const { stderr } = await exec('ssh -T git@github.com', { exitCode: 1, echo: true })
+      const { stderr } = await exec('ssh -T git@github.com', { exitCode: 1 })
       expect(stderr).toContain("Hi mplewis/private-clonable-repo! You've successfully authenticated, but GitHub does not provide shell access.")
     })
   })

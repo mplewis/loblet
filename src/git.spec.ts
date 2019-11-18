@@ -1,13 +1,12 @@
 import { setCreds, clone } from './git'
 import { exec } from './shell'
+import { read } from './fs'
 import ensureContainerized from '../spec/utils/ensure_containerized'
 import tempdir from '../spec/utils/tempdir'
 import { privKey, githubKnownHost } from '../spec/fixtures/ssh'
 import { join } from 'path'
-import { read } from './fs'
-import { PRIVATE_KEY_FILE } from './ssh'
-import { unlink, remove } from 'fs-extra'
-import expandTilde = require('expand-tilde')
+import expandTilde from 'expand-tilde'
+import { remove } from 'fs-extra'
 
 ensureContainerized()
 

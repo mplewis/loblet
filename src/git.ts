@@ -26,5 +26,5 @@ export async function setCreds (gitCreds: GitCredentials, sshCreds: SshCredentia
 }
 
 export async function clone (context: GitContext): Promise<void> {
-  await exec(`git clone "${context.repo}" "${context.dir}"`, { echo: true })
+  await exec(`git clone "${context.repo}" "${context.dir}"`)
 }

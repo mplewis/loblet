@@ -3,4 +3,4 @@ set -euo pipefail
 IFS=$'\n\t'
 
 bin/build.sh
-docker run -it loblet test "$@"
+docker run -it loblet test --runInBand "$@"
