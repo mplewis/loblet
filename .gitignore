@@ -1,3 +1,4 @@
 dist
 node_modules
 src/sandbox.ts
+yarn-error.log
