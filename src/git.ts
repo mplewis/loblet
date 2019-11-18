@@ -1,18 +1,15 @@
 import { GitContext, GitCredentials } from './types'
 import { exec } from './shell'
-import { writeFile, mkdirp } from 'fs-extra'
-import { homedir } from 'os'
-import { join } from 'path'
+import { exec as _exec } from 'shelljs'
+import { setPrivKey } from './ssh'
 
 export async function setCreds (creds: GitCredentials): Promise<void> {
-  const sshDir = join(homedir(), '.ssh')
-  const idRsaPath = join(sshDir, 'id_rsa')
   await exec(`git config --global user.name "${creds.name}"`)
   await exec(`git config --global user.email "${creds.email}"`)
-  await mkdirp(sshDir)
-  await writeFile(idRsaPath, creds.sshPrivateKey)
+  await setPrivKey(creds.sshPrivateKey)
 }
 
 export async function clone (context: GitContext): Promise<void> {
-  await exec(`git clone ${context.repo} ${context.dir}`)
+  // await exec(`git clone ${context.repo} ${context.dir}`)
+  await _exec(`git clone "${context.repo}" "${context.dir}"`, { async: false, silent: false })
 }
