@@ -1,7 +1,7 @@
 import { ensureKnownHost, KNOWN_HOSTS_FILE } from './ssh'
 import ensureContainerized from '../spec/utils/ensure_containerized'
 import { privKey, githubKnownHost } from '../spec/fixtures/ssh'
-import { unlink, ensureFile, writeFile } from 'fs-extra'
+import { unlink, ensureFile, writeFile, remove } from 'fs-extra'
 import { read } from './fs'
 import { exec } from './shell'
 import expandTilde = require('expand-tilde')
@@ -20,7 +20,7 @@ async function itPopulatesTheFileAsExpected (times = 1): Promise<void> {
 }
 
 describe('ensureKnownHost', () => {
-  afterEach(async () => { await unlink(KNOWN_HOSTS_FILE) })
+  afterEach(async () => { await remove(expandTilde('~/.ssh')) })
 
   describe('when no file exists', () => {
     itPopulatesTheFileAsExpected()
@@ -58,7 +58,7 @@ describe('ensureKnownHost', () => {
       const lines = [
         'mplewis.com ssh-rsa SOME-FAKE-KEY-DATA',
         'fdnt.me ssh-rsa SOME-FAKE-KEY-DATA',
-        GITHUB_KNOWN_HOST
+        githubKnownHost
       ]
       await writeFile(KNOWN_HOSTS_FILE, lines.join('\n'))
     })
@@ -67,12 +67,12 @@ describe('ensureKnownHost', () => {
 
   describe('after ensuring the GitHub known host', () => {
     beforeEach(async () => {
-      await ensureKnownHost(GITHUB_KNOWN_HOST)
+      await ensureKnownHost(githubKnownHost)
       await writeFile(ID_RSA, privKey, { mode: 0o600 })
     })
     afterEach(async () => { await unlink(ID_RSA) })
     it('connects to GitHub successfully', async () => {
-      const { stderr } = await exec('ssh -T git@github.com', { exitCode: 1 })
+      const { stderr } = await exec('ssh -T git@github.com', { exitCode: 1, echo: true })
       expect(stderr).toContain("Hi mplewis/private-clonable-repo! You've successfully authenticated, but GitHub does not provide shell access.")
     })
   })
